@@ -1,1 +1,11 @@
-<button (click)="lambda()">Run</button>
+<div *ngIf="user; else tplLogin">
+  logged in {{user.user_metadata.full_name}}
+  <button (click)="lambda()">Get my stuff</button>
+</div>
+
+<ng-template #tplLogin>
+  <div class="login">
+    <h1>yuuvis share</h1>
+    <button (click)="login()">Login, Buddy!</button>
+  </div>
+</ng-template>

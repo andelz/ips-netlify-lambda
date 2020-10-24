@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import * as netlifyIdentity from 'netlify-identity-widget';
 
 @Component({
   selector: 'app-root',
@@ -7,11 +8,25 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor(private http: HttpClient) {}
+
+user;
+  constructor(private http: HttpClient) {    
+  }
+
+  login() {
+    netlifyIdentity.init();
+    netlifyIdentity.open();
+    netlifyIdentity.on('login', (user) => {
+     this.user = user;
+      console.log(user);
+    });
+  }
 
   lambda() {
-    // const URI = '/.netlify/functions/getshares';
-    const URI = 'http://localhost:9000/getshares';
-    this.http.get(URI).subscribe(res => console.log(res))
+    const URI = '/.netlify/functions/shared';
+    // const URI = 'http://localhost:9000/shared';
+    this.http
+      .post(URI, { email: 'andel.schulz@gmail.com' })
+      .subscribe((res) => console.log(res));
   }
 }
