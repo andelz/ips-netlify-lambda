@@ -4,7 +4,6 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "prebuild": "cd functions/myfunction && npm i",
     "build": "ng build",
     "lambda:build": "netlify-lambda build functions",
     "lambda:serve": "netlify-lambda serve functions",
