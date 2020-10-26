@@ -8,8 +8,8 @@
     Here is a list of stuff yuuvis shared with you:
   </p>
   <div class="actions">
-    <button class="refresh" (click)="fetchSharedFiles()">refresh</button>
-    <button class="logout" (click)="logout()">logout</button>
+    <button type="button" class="refresh" (click)="fetchSharedFiles()">refresh</button>
+    <button type="button" class="logout" (click)="logout()">logout</button>
   </div>
 
   <div class="content">
@@ -17,6 +17,7 @@
     <div class="error" *ngIf="error">OMG! {{error}}</div>
     <div class="result" *ngIf="!loading && files.length">
       <div class="file" *ngFor="let file of files">
+        <button class="download" type="button" (click)="downloadFile(file.id)">download</button>
         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
           <path d="M0 0h24v24H0z" fill="none" />
           <path
@@ -26,9 +27,9 @@
         <div class="description">{{file.description}}</div>
         <form class="comment" *ngIf="file.canComment" [formGroup]="commentForm" (ngSubmit)="addComment(file)">
           
-          <button *ngIf="!file.showCommentForm" (click)="file.showCommentForm = !file.showCommentForm">comment</button>
+          <button type="button" *ngIf="!file.showCommentForm" (click)="file.showCommentForm = !file.showCommentForm">comment</button>
           <ng-container *ngIf="file.showCommentForm">
-            <div class="form">
+            <div class="form" [ngClass]="{busy: addingComment}">
               <input autofocus type="text" formControlName="comment"><button class="primary" type="submit">add comment</button>
               <button type="button" (click)="file.showCommentForm = !file.showCommentForm">x</button>
             </div>

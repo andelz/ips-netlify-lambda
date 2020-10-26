@@ -27,8 +27,6 @@
 
             border: 20px solid rgba(var(--color-primary-rgb), 0.4);
         }
-
-        
     }
 
     .stuff {
@@ -88,9 +86,9 @@
             .result {
                 .file {
                     display: grid;
-                    grid-template-rows: auto 1fr;
-                    grid-template-columns: auto 1fr;
-                    grid-template-areas: "icon title" "icon description" "icon comment";
+                    grid-template-rows: auto 1fr auto;
+                    grid-template-columns: auto 1fr auto;
+                    grid-template-areas: "icon title download" "icon description download" "icon comment comment";
                     margin-top: 16px;
                     cursor: pointer;
                     &:hover {
@@ -100,7 +98,12 @@
                         }
                     }
                 }
-
+                button.download {
+                    grid-area: download;
+                    padding: 4px 8px;
+                        background-color: rgba(255, 255, 255, 0.1);
+                        color: #fff;
+                }
                 svg {
                     transition: all 200ms ease-in-out;
                     padding: 6px;
@@ -118,19 +121,34 @@
                 }
                 .comment {
                     grid-area: comment;
-                    
-                    .form{
-                    display: flex;
-                    gap: 4px;
-                    padding: 16px 0;
+                    margin-top: 1em;
 
-                    input {
-                        flex: 1;
-                        padding: 0 1em;
-                        outline: 0;
-                        border:0; background-color: rgba(255, 255, 255, 0.1);
-                        color:#fff;
-                    }}
+                    .form {
+                        transition: opacity 200ms ease-in-out;
+                        display: flex;
+                        gap: 4px;
+                        padding: 16px 0;
+
+                        input {
+                            flex: 1;
+                            padding: 0 1em;
+                            outline: 0;
+                            border: 0;
+                            background-color: rgba(255, 255, 255, 0.1);
+                            color: #fff;
+                        }
+
+                        &.busy {
+                            pointer-events: none;
+                            opacity: 0.3;
+                        }
+                    }
+
+                    button:not(.primary) {
+                        padding: 4px 8px;
+                        background-color: rgba(255, 255, 255, 0.1);
+                        color: #fff;
+                    }
                 }
             }
         }

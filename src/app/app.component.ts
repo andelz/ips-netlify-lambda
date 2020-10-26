@@ -18,13 +18,13 @@ export interface SharedFile {
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  
   // FUNCTIONS_URI = 'http://localhost:9000';
   FUNCTIONS_URI = '/.netlify/functions';
-  
+
   files: SharedFile[] = [];
   user: { name: string; email: string };
   loading: boolean;
+  addingComment: boolean;
   error: string;
   commentForm: FormGroup;
 
@@ -68,11 +68,11 @@ export class AppComponent implements OnInit {
   addComment(file: SharedFile) {
     const msg = `${this.user.email}: ${this.commentForm.value.comment}`;
     const URI = `${this.FUNCTIONS_URI}/notice`;
-    this.loading = true;
+    this.addingComment = true;
     this.error = null;
     this.http
       .post(URI, { objectId: file.id, msg: msg })
-      .pipe(finalize(() => (this.loading = false)))
+      .pipe(finalize(() => (this.addingComment = false)))
       .subscribe(
         (res) => {
           file.showCommentForm = false;
@@ -82,6 +82,11 @@ export class AppComponent implements OnInit {
           this.error = 'Could not add notice';
         }
       );
+  }
+
+  downloadFile(id: string) {
+    const URI = `${this.FUNCTIONS_URI}/download`;
+    this.http.post(URI, { objectId: id }).subscribe();
   }
 
   private setUser(userData: any) {

@@ -1,5 +1,6 @@
 const axios = require('axios');
-const getAccessToken = require('./utils/auth.js').getAccessToken;
+// const getAccessToken = require('./utils/auth.js').getAccessToken;
+const getAccessToken = require('utils').getAccessToken;
 const API = require('./utils/auth.js').API;
 
 
@@ -20,8 +21,11 @@ exports.handler = function (event, context, callback) {
     }
 
     const addNotice = (objectId, msg) => {
+        
         const UPDATE_URL = `${API.URL}/api-web/dms/update/${objectId}`;
         const SEARCH_URL = `${API.URL}/api/dms/objects/search`;
+const NOTICE_FIELD = 'appPersonalfile:pfnotice';
+
         let headers;
 
         getAccessToken(API.TENANT).then(res => {
@@ -37,13 +41,15 @@ exports.handler = function (event, context, callback) {
             // load the current notice
             const q = {
                 "query": {
-                    "statement": `select  from appPersonalfile:pfnoticesot where system:objectId='${objectId}'`
+                    "statement": `select ${NOTICE_FIELD} from appPersonalfile:pfnoticesot where system:objectId='${objectId}'`
                 }
             }
             return axios.post(SEARCH_URL, q, headers)
             }).then(res => {
-                const notice = res.data.objects[0].properties['appPersonalfile:pfnotice'].value;
-                return axios.post(UPDATE_URL, { 'appPersonalfile:pfnotice': `${notice}\n${msg}` }, headers)
+                const prop = res.data.objects[0].properties[NOTICE_FIELD];
+                const data = {};
+                data[NOTICE_FIELD] = `${prop ? prop.value : ''}\n${msg}`;
+                return axios.patch(UPDATE_URL, data, headers)
             }).then(res => {
                 send(200, {})
             }).catch(err => {
