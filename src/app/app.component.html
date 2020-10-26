@@ -1,11 +1,55 @@
-<div *ngIf="user; else tplLogin">
-  logged in {{user.user_metadata.full_name}}
-  <button (click)="lambda()">Get my stuff</button>
+<div class="stuff" *ngIf="user; else tplLogin">
+
+  <div class="logo">yuuvis <span>share</span></div>
+  <h1>
+    Hello {{user.name}}!
+  </h1>
+  <p>
+    Here is a list of stuff yuuvis shared with you:
+  </p>
+  <div class="actions">
+    <button class="refresh" (click)="fetchSharedFiles()">refresh</button>
+    <button class="logout" (click)="logout()">logout</button>
+  </div>
+
+  <div class="content">
+    <div class="loading" *ngIf="loading">loading ...</div>
+    <div class="error" *ngIf="error">OMG! {{error}}</div>
+    <div class="result" *ngIf="!loading && files.length">
+      <div class="file" *ngFor="let file of files">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path
+            d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+          </svg>
+        <div class="title">{{file.title}}</div>
+        <div class="description">{{file.description}}</div>
+        <form class="comment" *ngIf="file.canComment" [formGroup]="commentForm" (ngSubmit)="addComment(file)">
+          
+          <button *ngIf="!file.showCommentForm" (click)="file.showCommentForm = !file.showCommentForm">comment</button>
+          <ng-container *ngIf="file.showCommentForm">
+            <div class="form">
+              <input autofocus type="text" formControlName="comment"><button class="primary" type="submit">add comment</button>
+              <button type="button" (click)="file.showCommentForm = !file.showCommentForm">x</button>
+            </div>
+            <div class="notice">{{file.notice}}</div>
+          </ng-container>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- login -->
 <ng-template #tplLogin>
   <div class="login">
-    <h1>yuuvis share</h1>
-    <button (click)="login()">Login, Buddy!</button>
+    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+      <path d="M0 0h24v24H0z" fill="none" />
+      <path
+        d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
+    </svg>
+
+    <h1 class="logo">yuuvis <span>share</span></h1>
+    <button class="primary" (click)="login()">Login, Buddy!</button>
   </div>
 </ng-template>

@@ -1,1 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+    --color-accent-rgb: 65, 239, 203;
+    --color-accent: rgba(var(--color-accent-rgb), 1);
+    --color-primary-rgb: 41,41,41;
+    --color-primary: rgba(var(--color-primary-rgb), 1);
+}
+html, body {
+    margin:0; padding: 0;
+    height: 100vh;
+}
+
+body {
+    background-image: url('assets/bgr.png');
+}
+
+button {
+    border:0; border-radius: 2px;
+    font-family: monospace;
+    padding: 8px 16px;
+    color: var(--color-primary);
+
+    &.primary {
+        background-color: var(--color-accent);
+        color: var(--color-primary);
+        font-weight: bold;
+    }
+}
+
+.logo {
+    span {
+        color: var(--color-accent);
+    }
+}
+
+

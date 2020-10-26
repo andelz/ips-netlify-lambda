@@ -21,11 +21,14 @@
     "@angular/platform-browser": "~9.1.12",
     "@angular/platform-browser-dynamic": "~9.1.12",
     "@angular/router": "~9.1.12",
+    "angular-svg-icon": "^8.0.0",
     "axios": "^0.20.0",
+    "dotenv": "^8.2.0",
     "netlify-identity-widget": "^1.9.1",
     "querystring": "^0.2.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
+    "utils": "file:utils",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
