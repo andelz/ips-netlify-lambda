@@ -1,5 +1,4 @@
 const axios = require('axios');
-// const getAccessToken = require('./utils/auth.js').getAccessToken;
 const getAccessToken = require('./utils/index.js').getAccessToken;
 const API = require('./utils/index.js').API;
 
