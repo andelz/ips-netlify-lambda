@@ -1,6 +1,6 @@
 const axios = require('axios');
 const getAccessToken = require('utils').getAccessToken;
-const API = require('./utils/auth.js').API;
+const API = require('utils').API;
 
 exports.handler = function (event, context, callback) {
 

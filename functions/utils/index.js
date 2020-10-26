@@ -1,13 +1,16 @@
 const axios = require('axios');
 const qs = require('querystring');
 
-export const API = {
+module.exports = getAccessToken;
+module.exports = API;
+
+const API = {
     TENANT: "kolibri",
     URL: "https://kolibri.enaioci.net"
 }
-export const getAccessToken = (tenant) => {
+function getAccessToken(tenant) {
     const { API_CLIENT_SECRET, API_USERNAME, API_PASSWORD } = process.env;
-    
+
 
     const AUTH_URL = `https://auth.enaioci.net/auth/realms/${tenant}/protocol/openid-connect/token`;
     return axios.post(AUTH_URL, qs.stringify({
