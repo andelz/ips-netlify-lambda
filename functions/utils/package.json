@@ -1,0 +1,8 @@
+{
+    "name": "utils",
+    "main": "index.js",
+    "dependencies": {
+        "axios": "^0.20.0",
+        "querystring": "^0.2.0"
+    }
+}

@@ -1,14 +1,12 @@
 const axios = require('axios');
 const qs = require('querystring');
 
-module.exports = getAccessToken;
-module.exports = API;
-
-const API = {
+exports.API = {
     TENANT: "kolibri",
     URL: "https://kolibri.enaioci.net"
 }
-function getAccessToken(tenant) {
+
+exports.getAccessToken = (tenant) => {
     const { API_CLIENT_SECRET, API_USERNAME, API_PASSWORD } = process.env;
 
 

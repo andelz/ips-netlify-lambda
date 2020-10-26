@@ -1,6 +1,6 @@
 const axios = require('axios');
-const getAccessToken = require('./utils/index.js').getAccessToken;
-const API = require('./utils/index.js').API;
+const getAccessToken = require('utils').getAccessToken;
+const API = require('utils').API;
 
 
 // add a notice
