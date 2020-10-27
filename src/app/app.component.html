@@ -17,14 +17,14 @@
     <div class="error" *ngIf="error">OMG! {{error}}</div>
     <div class="result" *ngIf="!loading && files.length">
       <div class="file" *ngFor="let file of files">
-        <button class="download" type="button" (click)="downloadFile(file.id)">download</button>
+        <button class="download" type="button" (click)="downloadFile(file)">download</button>
         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
           <path d="M0 0h24v24H0z" fill="none" />
           <path
             d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
           </svg>
         <div class="title">{{file.title}}</div>
-        <div class="description">{{file.description}}</div>
+        <div class="description">{{file.description}} | {{file.contentFilename}}</div>
         <form class="comment" *ngIf="file.canComment" [formGroup]="commentForm" (ngSubmit)="addComment(file)">
           
           <button type="button" *ngIf="!file.showCommentForm" (click)="file.showCommentForm = !file.showCommentForm">comment</button>

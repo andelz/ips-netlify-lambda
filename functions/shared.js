@@ -25,6 +25,7 @@ exports.handler = function (event, context, callback) {
                 'system:objectId',
                 'appClient:clienttitle',
                 'appClient:clientdescription',
+                'system:contentStreamFileName',
                 'system:secondaryObjectTypeIds'
             ],
             filters: [{ "f": "appPersonalfile:pfshare", "o": "in", "v1": [email] }],
@@ -41,9 +42,12 @@ exports.handler = function (event, context, callback) {
                 }
             })
         }).then(res => {
+            console.log('data', JSON.stringify(res.data.objects, null, 2))
             send(200, res.data.objects.map(o => ({
                 id: o.properties['system:objectId'].value,
                 title: o.properties['appClient:clienttitle'].value,
+                description: o.properties['appClient:clientdescription'].value,
+                contentFilename: o.contentStreams[0] && o.contentStreams[0]['fileName'],
                 description: o.properties['appClient:clientdescription'].value,
                 canComment: o.properties['system:secondaryObjectTypeIds'].value.includes('appPersonalfile:pfnoticesot')
             })))

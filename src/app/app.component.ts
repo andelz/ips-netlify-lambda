@@ -8,6 +8,8 @@ export interface SharedFile {
   id: string;
   title: string;
   description: string;
+  contentID: string;
+  contentFilename: string;
   canComment: boolean;
   showCommentForm: boolean;
 }
@@ -84,10 +86,35 @@ export class AppComponent implements OnInit {
       );
   }
 
-  downloadFile(id: string) {
-    const URI = `${this.FUNCTIONS_URI}/download`;
-    this.http.post(URI, { id: id }).subscribe();
+  downloadFile(file: SharedFile) {
+    const URI = `${this.FUNCTIONS_URI}/download?id=${file.id}&name=${file.contentFilename}`;
+    // this.download(URI, file.contentFilename);
+    this.http.get(URI, {responseType: "blob"}).subscribe((res: any) => {
+      const a = document.createElement('a');
+      // a.href = window.URL.createObjectURL(new Blob([res]))
+      a.setAttribute('href', window.URL.createObjectURL(res));
+      // a.setAttribute('href', window.URL.createObjectURL(new Blob([new Uint8Array(res)])));
+      a.style.display = 'none';
+      a.setAttribute('download', file.contentFilename || 'download');
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
   }
+
+  // public download(uri: string, filename?: string) {
+  //   if (document && document.body) {
+  //     const a = document.createElement('a');
+  //     a.setAttribute('href', uri);
+  //     a.style.display = 'none';
+  //     a.setAttribute('download', filename || 'download');
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     document.body.removeChild(a);
+  //   } else {
+  //     console.error('Environment not supported. Downloading contents relies on a DOM being available.');
+  //   }
+  // }
 
   private setUser(userData: any) {
     this.user = userData
