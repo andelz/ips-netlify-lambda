@@ -1,7 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-    --color-accent-rgb: 65, 239, 203;
+    // --color-accent-rgb: 65, 239, 203;
+    --color-accent-rgb: 51, 173, 157;
     --color-accent: rgba(var(--color-accent-rgb), 1);
     --color-primary-rgb: 41,41,41;
     --color-primary: rgba(var(--color-primary-rgb), 1);
@@ -23,7 +24,7 @@ button {
 
     &.primary {
         background-color: var(--color-accent);
-        color: var(--color-primary);
+        color: #fff;
         font-weight: bold;
     }
 }
