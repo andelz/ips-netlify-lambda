@@ -1,5 +1,6 @@
 const axios = require('axios');
-const getAccessToken = require('utils').getAccessToken;
+const getRequestOptions = require('utils').getRequestOptions;
+const getResponseHeaders = require('utils').getResponseHeaders;
 const API = require('utils').API;
 
 
@@ -8,76 +9,41 @@ exports.handler = function (event, context, callback) {
 
     // send user response
     const send = (status, body) => {
-        const responsHeaders = {};
-        responsHeaders['Access-Control-Allow-Origin'] = '*';
-        responsHeaders['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS, DELETE, PUT';
-        responsHeaders['Access-Control-Allow-Headers'] = 'Origin, X-Requested-Width, Content-Type, Accept';
         callback(null, {
             statusCode: status,
-            headers: responsHeaders,
-            body: JSON.stringify(body)
+            headers: getResponseHeaders(),
+            ...(body && { body: JSON.stringify(body) })
         })
     }
 
     const addNotice = (objectId, msg) => {
-        
+
         const UPDATE_URL = `${API.URL}/api-web/dms/update/${objectId}`;
         const SEARCH_URL = `${API.URL}/api/dms/objects/search`;
-const NOTICE_FIELD = 'appPersonalfile:pfnotice';
+        const NOTICE_FIELD = 'appPersonalfile:pfnotice';
 
-        let headers;
+        let requestOtions;
 
-        getAccessToken(API.TENANT).then(res => {
-            // token = res.data.access_token;
-
-            headers = {
-                headers: {
-                    'Authorization': `Bearer ${res.data.access_token}`,
-                    'X-ID-TENANT-NAME': API.TENANT
-                }
-            }
-
+        getRequestOptions(API.TENANT).then(options => {
+            requestOtions = options;
             // load the current notice
             const q = {
                 "query": {
                     "statement": `select ${NOTICE_FIELD} from appPersonalfile:pfnoticesot where system:objectId='${objectId}'`
                 }
             }
-            return axios.post(SEARCH_URL, q, headers)
-            }).then(res => {
-                const prop = res.data.objects[0].properties[NOTICE_FIELD];
-                const data = {};
-                data[NOTICE_FIELD] = `${prop ? prop.value : ''}\n${msg}`;
-                return axios.patch(UPDATE_URL, data, headers)
-            }).then(res => {
-                send(200, {})
-            }).catch(err => {
-                console.log(err);
-                send(500, err)
-            })
-            
-            
-            
-            
-            
-            
-            
-        //     .then(res => {
-        //         const notice = res.data.objects[0].properties['appPersonalfile:pfnotice'].value;
-        //         axios.post(UPDATE_URL, { 'appPersonalfile:pfnotice': `${notice}\n${msg}` }, {
-        //             headers: {
-        //                 'Authorization': `Bearer ${token}`,
-        //                 'X-ID-TENANT-NAME': API.TENANT
-        //             }
-        //         }).then(res => {
-        //             send(200, {})
-        //         }).catch(err => send(500, err))
-        //     }).catch(err => send(500, 'could not fatech notice'))
-
-
-
-
-        // }).catch(err => send(401, err))
+            return axios.post(SEARCH_URL, q, requestOtions)
+        }).then(res => {
+            const prop = res.data.objects[0].properties[NOTICE_FIELD];
+            const data = {};
+            data[NOTICE_FIELD] = `${prop ? prop.value : ''}\n${msg}`;
+            return axios.patch(UPDATE_URL, data, requestOtions)
+        }).then(res => {
+            send(200, {})
+        }).catch(err => {
+            console.log(err);
+            send(500, err)
+        })
     }
 
     if (event.httpMethod === 'POST') {

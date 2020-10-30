@@ -23,11 +23,15 @@
     "@angular/router": "~9.1.12",
     "angular-svg-icon": "^8.0.0",
     "axios": "^0.20.0",
-    "utils": "file:functions/utils",
+    "buffer": "^5.7.0",
+    "data-uri-to-file": "^0.1.8",
+    "form-data": "^3.0.0",
     "netlify-identity-widget": "^1.9.1",
+    "ngx-file-helpers": "^4.0.1",
     "querystring": "^0.2.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
+    "utils": "file:functions/utils",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

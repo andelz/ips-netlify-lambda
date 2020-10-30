@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import * as netlifyIdentity from 'netlify-identity-widget';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ReadMode } from 'ngx-file-helpers';
 
 export interface SharedFile {
   id: string;
@@ -20,8 +21,8 @@ export interface SharedFile {
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  // FUNCTIONS_URI = 'http://localhost:9000';
-  FUNCTIONS_URI = '/.netlify/functions';
+  FUNCTIONS_URI = 'http://localhost:9000';
+  // FUNCTIONS_URI = '/.netlify/functions';
 
   files: SharedFile[] = [];
   user: { name: string; email: string };
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
   addingComment: boolean;
   error: string;
   commentForm: FormGroup;
+  fileReadMode = ReadMode.arrayBuffer;
 
   constructor(private http: HttpClient, private fb: FormBuilder) {
     this.commentForm = this.fb.group({
@@ -89,7 +91,7 @@ export class AppComponent implements OnInit {
   downloadFile(file: SharedFile) {
     const URI = `${this.FUNCTIONS_URI}/download?id=${file.id}&name=${file.contentFilename}`;
     // this.download(URI, file.contentFilename);
-    this.http.get(URI, {responseType: "blob"}).subscribe((res: any) => {
+    this.http.get(URI, { responseType: 'blob' }).subscribe((res: any) => {
       const a = document.createElement('a');
       // a.href = window.URL.createObjectURL(new Blob([res]))
       a.setAttribute('href', window.URL.createObjectURL(res));
@@ -102,19 +104,14 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // public download(uri: string, filename?: string) {
-  //   if (document && document.body) {
-  //     const a = document.createElement('a');
-  //     a.setAttribute('href', uri);
-  //     a.style.display = 'none';
-  //     a.setAttribute('download', filename || 'download');
-  //     document.body.appendChild(a);
-  //     a.click();
-  //     document.body.removeChild(a);
-  //   } else {
-  //     console.error('Environment not supported. Downloading contents relies on a DOM being available.');
-  //   }
-  // }
+  uploadFile(file: SharedFile, e) {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', e.underlyingFile.type)
+    this.http.post(`${this.FUNCTIONS_URI}/upload?id=${file.id}&filename=${e.underlyingFile.name}`, 
+    e.underlyingFile, {
+      headers: headers
+    }).subscribe()
+  }
 
   private setUser(userData: any) {
     this.user = userData

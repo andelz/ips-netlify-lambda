@@ -18,36 +18,34 @@
         .claim {
             margin-bottom: 40px;
         }
-        svg {
+        yeca-app-icon {
             margin-bottom: 1em;
-            background-color: var(--color-accent);
-            fill: #fff;
-            border-radius: 50%;
-            padding: 20px;
             width: 90px;
             height: 90px;
-            box-shadow: 0 0 0 20px rgba(var(--color-accent-rgb), 0.2);
-
-            border: 20px solid rgba(var(--color-primary-rgb), 0.4);
         }
     }
 
     .stuff {
         padding: 16px;
         box-sizing: border-box;
-
         height: 100vh;
         overflow: hidden;
         max-width: 800px;
         margin: 0 auto;
         display: grid;
         grid-template-rows: auto auto auto 1fr;
-        grid-template-columns: 1fr auto;
+        grid-template-columns: auto 1fr auto;
         grid-template-areas:
-            "logo refresh"
-            "headertitle headertitle"
-            "headercontent headercontent"
-            "content content";
+            "icon logo refresh"
+            "headertitle headertitle headertitle"
+            "headercontent headercontent headercontent"
+            "content content content";
+
+        yeca-app-icon {
+            grid-area: icon;
+            align-self: center;
+            margin-right: 1em;
+        }
         div.logo {
             grid-area: logo;
             align-self: center;
@@ -79,6 +77,7 @@
         .content {
             grid-area: content;
             overflow-y: auto;
+            margin-top: 2em;
 
             .loading {
                 animation: loading infinite 2s linear;
@@ -89,11 +88,16 @@
 
             .result {
                 .file {
+                    border-top: 1px solid rgba(255, 255, 255, 0.1);
                     display: grid;
                     grid-template-rows: auto 1fr auto;
                     grid-template-columns: auto 1fr auto;
-                    grid-template-areas: "icon title download" "icon description download" "icon comment comment";
-                    margin-top: 16px;
+                    grid-template-areas:
+                        "icon title upload download"
+                        "icon description upload download"
+                        "icon comment comment comment";
+                    gap: 4px;
+                    padding: 8px 0;
                     cursor: pointer;
                     &:hover {
                         svg {
@@ -102,12 +106,18 @@
                         }
                     }
                 }
-                button.download {
-                    grid-area: download;
+                button:not(.primary) {
                     padding: 4px 8px;
                     background-color: rgba(255, 255, 255, 0.1);
                     color: #fff;
                     align-self: center;
+
+                    &.upload {
+                        grid-area: upload;
+                    }
+                    &.download {
+                        grid-area: download;
+                    }
                 }
                 svg {
                     transition: all 200ms ease-in-out;
