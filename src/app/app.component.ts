@@ -21,8 +21,8 @@ export interface SharedFile {
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  FUNCTIONS_URI = 'http://localhost:9000';
-  // FUNCTIONS_URI = '/.netlify/functions';
+  // FUNCTIONS_URI = 'http://localhost:9000';
+  FUNCTIONS_URI = '/.netlify/functions';
 
   files: SharedFile[] = [];
   user: { name: string; email: string };
