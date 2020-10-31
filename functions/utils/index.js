@@ -18,7 +18,6 @@ exports.getRequestOptions = (tenant) => {
     const { API_CLIENT_SECRET, API_USERNAME, API_PASSWORD } = process.env;
     // console.log('TENANT', API.TENANT);
 
-
     const AUTH_URL = `https://auth.enaioci.net/auth/realms/${tenant}/protocol/openid-connect/token`;
     return axios.post(AUTH_URL, qs.stringify({
         client_id: tenant,

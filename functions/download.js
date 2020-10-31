@@ -9,9 +9,9 @@ exports.handler = function (event, context, callback) {
     
     // send user response
     const send = (status, body) => {
-        const responsHeaders = getResponseHeaders();
-        responsHeaders['Access-Control-Allow-Headers'] = 'Content-Disposition, Origin, X-Requested-Width, Content-Type, Accept';
-        responsHeaders['Content-Disposition'] = `attachment; filename="${filename}"`;
+        const responseHeaders = getResponseHeaders();
+        responseHeaders['Access-Control-Allow-Headers'] = 'Content-Disposition, Origin, X-Requested-Width, Content-Type, Accept';
+        responseHeaders['Content-Disposition'] = `attachment; filename="${filename}"`;
 
         callback(null, {
             statusCode: status,
@@ -23,16 +23,7 @@ exports.handler = function (event, context, callback) {
     const download = (objectId) => {
         getRequestOptions(API.TENANT).then(options => {
             return axios.get(`${API.URL}/api-web/dms/${objectId}/content`, 
-            {...options, responseType: 'arraybuffer'}
-            
-            // {
-            //     responseType: 'arraybuffer',
-            //     headers: {
-            //         'Authorization': `Bearer ${token}`,
-            //         'X-ID-TENANT-NAME': API.TENANT
-            //     }
-            // }
-            )
+            {...options, responseType: 'arraybuffer'})
         }).then(res => {
             send(200, res.data)
         }).catch(err => {
