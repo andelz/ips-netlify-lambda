@@ -33,10 +33,10 @@ exports.handler = function (event, context, callback) {
         }).then(res => {
             send(200, res.data.objects.map(o => ({
                 id: o.properties['system:objectId'].value,
-                title: o.properties['appClient:clienttitle'].value,
-                description: o.properties['appClient:clientdescription'].value,
+                title: o.properties['appClient:clienttitle'] ? o.properties['appClient:clienttitle'].value : 'Untitled',
+                description: o.properties['appClient:clientdescription'] ? o.properties['appClient:clientdescription'].value : '',
                 contentFilename: o.contentStreams[0] && o.contentStreams[0]['fileName'],
-                description: o.properties['appClient:clientdescription'].value,
+                // description: o.properties['appClient:clientdescription'].value,
                 canComment: o.properties['system:secondaryObjectTypeIds'].value.includes('appPersonalfile:pfnoticesot')
             })))
         }).catch(err => {
